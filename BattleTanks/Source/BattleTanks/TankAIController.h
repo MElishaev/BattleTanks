@@ -17,9 +17,10 @@ class BATTLETANKS_API ATankAIController : public AAIController
 	
 public:
 	// Getting AI Controlled Tank for logging the possessed tanks by AI (for now)
-	ATank * GetAIControlledTank();
+	ATank * GetAIControlledTank() const;
 
+	// AI tries to find the player tank (our tank)
+	ATank * GetPlayerTank() const;
+	
 	void BeginPlay() override;
-	
-	
 };
