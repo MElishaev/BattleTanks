@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "TankAimingComponent.h"
 #include "TankAIController.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
@@ -20,7 +21,7 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	GetAIControlledTank()->AimAt(GetPlayerTank()->GetTargetLocation());
 }
 

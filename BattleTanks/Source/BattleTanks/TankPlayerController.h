@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Tank.h"
