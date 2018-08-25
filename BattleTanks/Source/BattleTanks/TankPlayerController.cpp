@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Engine/World.h"
 
 void ATankPlayerController::BeginPlay()
@@ -36,46 +37,44 @@ void ATankPlayerController::AimAtCrosshair()
 	FVector HitLocation; // Out parameter
 
 	if (GetSightRayHitLocation(HitLocation))
-		UE_LOG(LogTemp, Warning, TEXT("The crosshair hitting: %s"), *HitLocation.ToString());
+	{
 		// TODO tell the controlled tank to aim at that point
+		GetControlledTank()->AimAt(HitLocation);
+	}
 }
 
 // get world location where the linetrace intersects the landscape, TRUE if hits landscape
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitResult) const
 {
-	// Getting screen size - why?
+	// Getting screen size of the game
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 	// Pixel coordinates of the crosshair
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX*CrosshairXLocation, ViewportSizeY*CrosshairYLocation);
-	
+	//Convert 2D screen position to World Space 3D position and direction. Returns false if unable to determine value.
+	FVector WordLocation, LookDirection;
+	if (DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WordLocation, LookDirection))
+	{
+		// Line trace along the look direction to see what it hits
+		return GetLookVectorHitLocation(LookDirection, OutHitResult);
+	}
 	return false;
+}
 
-
-
-	//FHitResult Hit;
-	//// Get View point of the player each frame 
-	//FRotator PlayerViewPointRotation;
-	//FVector PlayerViewPointVector;
-	//GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerViewPointVector, PlayerViewPointRotation);
-	//UE_LOG(LogTemp, Warning, TEXT("PlayerViewPointRotation: %s	PlayerViewPointVector: %s"), *PlayerViewPointRotation.ToString(), *PlayerViewPointVector.ToString());
-
-	//// Linetrace from player view for later use on objects in reach
-	//FVector End = PlayerViewPointVector + PlayerViewPointRotation.Vector() * 10000.f;
-
-	//FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-	//GetWorld()->LineTraceSingleByObjectType(
-	//	Hit,
-	//	PlayerViewPointVector,
-	//	End,
-	//	FCollisionObjectQueryParams(ECollisionChannel::ECC_WorldStatic),
-	//	TraceParameters
-	//);
-	//// get the first landscape coordinates it hits
-	//OutHitResult = Hit.Location;
-	//UE_LOG(LogTemp, Warning, TEXT("HitResult is: %s"), *OutHitResult.ToString());
-
-	//return OutHitResult.IsZero();
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitResult) const
+{
+	FHitResult HitResult;
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		PlayerCameraManager->GetCameraLocation(),
+		PlayerCameraManager->GetCameraLocation() + LookDirection*LineTraceRange,
+		ECollisionChannel(ECC_Visibility)
+		))
+	{
+		OutHitResult = HitResult.ImpactPoint;
+		return true;
+	}
+	else return false;
 }
 
 

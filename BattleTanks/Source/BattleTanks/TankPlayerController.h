@@ -34,6 +34,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CrosshairYLocation = 0.333333;
 
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 1000000.f;
+
 	// Get the Point where the linetrace hit the landscape
 	bool GetSightRayHitLocation(FVector&) const;
+
+	bool GetLookVectorHitLocation(FVector,FVector&) const;
 };

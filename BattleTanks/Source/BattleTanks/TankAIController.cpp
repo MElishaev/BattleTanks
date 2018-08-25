@@ -17,6 +17,13 @@ void ATankAIController::BeginPlay()
 	else
 		UE_LOG(LogTemp, Warning, TEXT("AIControlledTank found player's tank: %s"), *PlayerTank->GetName());
 }
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	GetAIControlledTank()->AimAt(GetPlayerTank()->GetTargetLocation());
+}
+
 
 ATank * ATankAIController::GetAIControlledTank() const
 {
