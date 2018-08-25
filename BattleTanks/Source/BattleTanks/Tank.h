@@ -31,4 +31,9 @@ public:
 
 	void AimAt(FVector);
 
+	// function which we can call from blueprints
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	
+	
 };
