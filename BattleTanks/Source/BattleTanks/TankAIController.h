@@ -4,12 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "Tank.h"
 #include "TankAIController.generated.h"
 
-/**
- * 
- */
+// Forward Declarations
+class ATank;
+
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {

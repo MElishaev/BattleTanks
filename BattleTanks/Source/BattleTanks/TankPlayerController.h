@@ -2,15 +2,14 @@
 
 #pragma once
 
-#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Tank.h"
 #include "TankPlayerController.generated.h"
 
-/**
- * 
- */
+// Forward Declarations
+class UTankAimingComponent;
+class ATank;
+
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {

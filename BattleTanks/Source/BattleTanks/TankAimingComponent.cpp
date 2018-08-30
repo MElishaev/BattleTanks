@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -21,10 +22,15 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, StartLocation, HitLocation, 
-													LaunchSpeed,ESuggestProjVelocityTraceOption::DoNotTrace))
+													LaunchSpeed, false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		UE_LOG(LogTemp, Warning, TEXT("%f, Aiming solution found. moving barrel"), GetWorld()->GetTimeSeconds());
 		MoveBarrel(AimDirection);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f, No aiming solution found"), GetWorld()->GetTimeSeconds());
 	}
 	// if didn't find projectile velocity do nothing because we can't hit the spot
 }
