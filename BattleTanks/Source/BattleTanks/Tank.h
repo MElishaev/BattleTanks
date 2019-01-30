@@ -40,5 +40,5 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000; // TODO find sensible launch speed [cm/s]
+	float LaunchSpeed = 4000;
 };
