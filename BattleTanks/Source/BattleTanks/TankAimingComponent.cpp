@@ -26,12 +26,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 													LaunchSpeed, false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%f, Aiming solution found. moving barrel"), GetWorld()->GetTimeSeconds());
 		MoveBarrel(AimDirection);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%f, No aiming solution found"), GetWorld()->GetTimeSeconds());
 	}
 	// if didn't find projectile velocity do nothing because we can't hit the spot
 }

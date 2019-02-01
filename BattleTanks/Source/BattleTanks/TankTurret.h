@@ -17,7 +17,7 @@ class BATTLETANKS_API UTankTurret : public UStaticMeshComponent
 public:
 	void Rotate(float RelativeSpeed);
 
-private:
+	// TODO: changed the variable to public to check if the turret mesh still disappears
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MaxDegreesPerSecond = 25;
 	
