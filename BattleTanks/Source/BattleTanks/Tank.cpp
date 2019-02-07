@@ -48,14 +48,17 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f, Pressing Fire"), GetWorld()->GetTimeSeconds());
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 	
-	if (!Barrel) return;
+	if (Barrel && isReloaded)
+	{
+		// Spawn projectile at the socket of the barrel
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
+															  Barrel->GetSocketLocation(FName("Projectile")),
+															  Barrel->GetSocketRotation(FName("Projectile")));
+		Projectile->Launch(LaunchSpeed);
 
-	// Spawn projectile at the socket of the barrel
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, 
-										Barrel->GetSocketLocation(FName("Projectile")), 
-										Barrel->GetSocketRotation(FName("Projectile")));
-	Projectile->Launch(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds(); //TODO: can it get out of double range if i play long number of seconds
+	}
 }
 

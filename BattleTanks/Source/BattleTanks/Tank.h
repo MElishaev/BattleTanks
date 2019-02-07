@@ -51,4 +51,8 @@ public:
 
 	// Local tank barrel refrence for spawnable projectile
 	UTankBarrel* Barrel = nullptr;
+
+	float ReloadTimeInSeconds = 3;
+
+	double LastFireTime = 0;
 };
