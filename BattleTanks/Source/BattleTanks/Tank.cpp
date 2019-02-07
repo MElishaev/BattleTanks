@@ -48,7 +48,7 @@ void ATank::SetTurretReference(UTankTurret * TurretToSet)
 
 void ATank::Fire()
 {
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
 	
 	if (Barrel && isReloaded)
 	{
@@ -58,7 +58,7 @@ void ATank::Fire()
 															  Barrel->GetSocketRotation(FName("Projectile")));
 		Projectile->Launch(LaunchSpeed);
 
-		LastFireTime = FPlatformTime::Seconds(); //TODO: can it get out of double range if i play long number of seconds
+		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }
 

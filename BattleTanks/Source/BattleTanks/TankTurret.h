@@ -18,7 +18,7 @@ public:
 	void Rotate(float RelativeSpeed);
 
 	// TODO: changed the variable to public to check if the turret mesh still disappears
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float MaxDegreesPerSecond = 25;
 	
 };
