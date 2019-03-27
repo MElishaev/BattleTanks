@@ -6,19 +6,29 @@
 
 void UTankMovementComponent::Initialize(UTankTrack* RightTrackToSet, UTankTrack* LeftTrackToSet)
 {
-	UE_LOG(LogTemp, Warning, TEXT("initialized movement component"));
-	if (!RightTrackToSet || !LeftTrackToSet)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("could not find track to set"));
-		return;
-	}
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;
 }
 
 void UTankMovementComponent::IntendMoveForward(float Scale)
 {
-	UE_LOG(LogTemp, Warning, TEXT("moving %f"), Scale);
+	if (!RightTrack || !LeftTrack)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("could not find track to set"));
+		return;
+	}
 	LeftTrack->SetThrottle(Scale);
 	RightTrack->SetThrottle(Scale);
+	//TODO: prevent double speed when pushing both throttles
+}
+
+void UTankMovementComponent::IntendTurnRight(float Scale)
+{
+	if (!RightTrack || !LeftTrack)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("could not find track to set"));
+		return;
+	}
+	LeftTrack->SetThrottle(Scale);
+	RightTrack->SetThrottle(-Scale);
 }
