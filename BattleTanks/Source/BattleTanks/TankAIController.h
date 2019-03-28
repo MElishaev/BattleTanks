@@ -18,4 +18,8 @@ private:
 	void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	// Distance the enemy tank want to get to the player
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float AcceptanceRadius = 3000; // TODO: check if in cm or m
 };

@@ -19,6 +19,8 @@ void ATankAIController::Tick(float DeltaTime)
 	
 	if (PlayerTank)
 	{
+		MoveToActor(PlayerTank, AcceptanceRadius);
+
 		AIControlledTank->AimAt(PlayerTank->GetTargetLocation());
 
 		AIControlledTank->Fire(); // TODO: limit firing rate
