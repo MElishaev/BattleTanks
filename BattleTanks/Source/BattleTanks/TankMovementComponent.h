@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Nameless Studio
 
 #pragma once
 
@@ -26,10 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void IntendTurnRight(float Scale);
 
-	//TODO: Check protection of the class
+private:
+	// Pathfinding logic of AI tanks
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 
-private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 

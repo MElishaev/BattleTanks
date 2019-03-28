@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Nameless Studio
 
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
@@ -19,7 +19,6 @@ void UTankMovementComponent::IntendMoveForward(float Scale)
 	}
 	LeftTrack->SetThrottle(Scale);
 	RightTrack->SetThrottle(Scale);
-	//TODO: prevent double speed when pushing both throttles
 }
 
 void UTankMovementComponent::IntendTurnRight(float Scale)
@@ -37,9 +36,11 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 {
 	auto TankFacingVector = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	auto AIMovementIntention = MoveVelocity.GetSafeNormal();
+	
 	auto ForwardMovementScale = FVector::DotProduct(TankFacingVector, AIMovementIntention);
-
 	IntendMoveForward(ForwardMovementScale);
 
+	auto RightMovementScale = FVector::CrossProduct(TankFacingVector, AIMovementIntention).Z;
+	IntendTurnRight(RightMovementScale);
 }
 
