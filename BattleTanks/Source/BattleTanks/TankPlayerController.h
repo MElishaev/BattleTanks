@@ -20,11 +20,13 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	ATank * GetControlledTank() const;
 	
 	// Aim the barrel to the point where the linetrace of the crosshair hits the landscape
 	void AimAtCrosshair();
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank * GetControlledTank() const;
 
 private:
 	// Crosshair location
