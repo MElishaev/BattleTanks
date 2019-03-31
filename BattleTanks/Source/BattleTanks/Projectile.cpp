@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Nameless Studio
 
 #include "Projectile.h"
 

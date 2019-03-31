@@ -12,7 +12,7 @@ void UTankMovementComponent::Initialize(UTankTrack* RightTrackToSet, UTankTrack*
 
 void UTankMovementComponent::IntendMoveForward(float Scale)
 {
-	if (!RightTrack || !LeftTrack)
+	if (!ensure(RightTrack || LeftTrack))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("could not find track to set"));
 		return;
@@ -23,7 +23,7 @@ void UTankMovementComponent::IntendMoveForward(float Scale)
 
 void UTankMovementComponent::IntendTurnRight(float Scale)
 {
-	if (!RightTrack || !LeftTrack)
+	if (!ensure(RightTrack || LeftTrack))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("could not find track to set"));
 		return;
