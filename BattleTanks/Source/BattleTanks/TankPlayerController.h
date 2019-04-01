@@ -8,7 +8,6 @@
 
 // Forward Declarations
 class UTankAimingComponent;
-class ATank;
 
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
@@ -25,9 +24,6 @@ public:
 	void AimAtCrosshair();
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank * GetControlledTank() const;
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundTankAimingComponent(UTankAimingComponent* AimCompRef);
 
