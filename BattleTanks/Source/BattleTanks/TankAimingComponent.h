@@ -47,6 +47,8 @@ private:
 
 	void MoveBarrel(FVector AimDirection);
 
+	bool IsBarrelMoving();
+
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 4000;
 
@@ -57,6 +59,7 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	double LastFireTime = -3;
+	FVector AimDirection;
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
 };
