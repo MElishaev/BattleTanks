@@ -25,5 +25,4 @@ void ATankAIController::Tick(float DeltaTime)
 	AimingComponent->AimAt(PlayerTank->GetTargetLocation());
 
 	AimingComponent->Fire(); // TODO: limit firing rate
-
 }

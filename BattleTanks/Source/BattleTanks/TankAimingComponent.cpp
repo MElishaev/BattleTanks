@@ -12,10 +12,24 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
 }
+
+void UTankAimingComponent::BeginPlay()
+{
+	// Have to reload before firing at the start of the game
+	LastFireTime = GetWorld()->GetTimeSeconds();
+	//UE_LOG(LogTemp, Warning, TEXT("WE ARE HERE"));
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	if ((GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds)
+		FiringState = EFiringStatus::Aiming;
+}
+
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
@@ -53,11 +67,10 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
-	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (isReloaded)
+	if (FiringState != EFiringStatus::Reloading)
 	{
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
 		// Spawn projectile at the socket of the barrel
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint,
 															  Barrel->GetSocketLocation(FName("Projectile")),
