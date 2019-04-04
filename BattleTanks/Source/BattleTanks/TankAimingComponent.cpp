@@ -13,15 +13,12 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 void UTankAimingComponent::BeginPlay()
 {
 	// Have to reload before firing at the start of the game
 	LastFireTime = GetWorld()->GetTimeSeconds();
-	//UE_LOG(LogTemp, Warning, TEXT("WE ARE HERE"));
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
@@ -71,8 +68,14 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 	Barrel->ElevateBarrel(DeltaRotator.Pitch);
-	Turret->Rotate(DeltaRotator.Yaw);
 
+	//UE_LOG(LogTemp, Warning, TEXT("AimRotator: %.2f	BarrelRotator: %.2f		Delta: %.2f"), AimAsRotator.Yaw, BarrelRotator.Yaw, DeltaRotator.Yaw);
+	// Rotate the shortest way
+	if (DeltaRotator.Yaw < -180)
+		DeltaRotator.Yaw += 360;
+	else if (DeltaRotator.Yaw > 180)
+		DeltaRotator.Yaw -= 360;
+	Turret->Rotate(DeltaRotator.Yaw);
 }
 
 void UTankAimingComponent::Fire()
