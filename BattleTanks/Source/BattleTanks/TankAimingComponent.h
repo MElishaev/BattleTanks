@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
 
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	int GetAmmo() const;
+
 	EFiringStatus GetFiringState() const;
 
 protected:
@@ -61,6 +64,7 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	double LastFireTime = -3;
+	int Ammo = 10;
 	FVector AimDirection;
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;

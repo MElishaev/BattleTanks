@@ -80,7 +80,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (FiringState != EFiringStatus::Reloading)
+	if (FiringState != EFiringStatus::Reloading && Ammo > 0)
 	{
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
@@ -89,9 +89,15 @@ void UTankAimingComponent::Fire()
 															  Barrel->GetSocketLocation(FName("Projectile")),
 															  Barrel->GetSocketRotation(FName("Projectile")));
 		Projectile->Launch(LaunchSpeed);
+		Ammo--;
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
+}
+
+int UTankAimingComponent::GetAmmo() const
+{
+	return Ammo;
 }
 
 EFiringStatus UTankAimingComponent::GetFiringState() const
