@@ -25,8 +25,8 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 {
 	if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds)
 		FiringState = EFiringStatus::Reloading;
-	else if (IsBarrelMoving())
-		FiringState = EFiringStatus::Aiming;
+	else if (IsBarrelMoving()) // TODO fix some problem here, AI tank is shooting even when not locked
+		FiringState = EFiringStatus::Aiming;	// probably we never get in here or the tolerance is too low
 	else
 		FiringState = EFiringStatus::Locked;
 }
@@ -92,4 +92,9 @@ void UTankAimingComponent::Fire()
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
+}
+
+EFiringStatus UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
 }

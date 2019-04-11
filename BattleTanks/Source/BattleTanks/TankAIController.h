@@ -11,12 +11,14 @@ class BATTLETANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	
+protected:
+	// How close the AI tank wants to get to the player in cm
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float AcceptanceRadius = 10000;
 private:
 	void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
 
-	// Distance the enemy tank want to get to the player
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	float AcceptanceRadius = 3000; // TODO: check if in cm or m
+
 };

@@ -23,6 +23,11 @@ void ATankAIController::Tick(float DeltaTime)
 
 	auto AimingComponent = AIControlledTank->FindComponentByClass<UTankAimingComponent>();
 	AimingComponent->AimAt(PlayerTank->GetTargetLocation());
-
-	AimingComponent->Fire(); // TODO: limit firing rate
+	
+	// AI tank should fire only when locked on target
+	if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AI firing state is Locked"));
+		AimingComponent->Fire(); // TODO: limit firing rate
+	}
 }
