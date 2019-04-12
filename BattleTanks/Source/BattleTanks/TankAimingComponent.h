@@ -60,11 +60,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int32 Ammo = 10;
+
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	double LastFireTime = -3;
-	int32 Ammo = 10;
 	FVector AimDirection;
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
