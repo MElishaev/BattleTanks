@@ -15,11 +15,14 @@ AProjectile::AProjectile()
 	CollisionMesh->SetVisibility(false); 	// Projectile won't be visible, only its' vfx of smoke
 
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch VFX"));
-	LaunchBlast->AttachTo(RootComponent);
+	LaunchBlast->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
 
 	ImpactExplosion = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact VFX"));
 	ImpactExplosion->AttachTo(RootComponent);
 	ImpactExplosion->bAutoActivate = false;
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 	ProjectileMovement->bAutoActivate = false;
@@ -49,5 +52,6 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 {
 	LaunchBlast->Deactivate();
 	ImpactExplosion->Activate();
+	ExplosionForce->FireImpulse();
 }
 
