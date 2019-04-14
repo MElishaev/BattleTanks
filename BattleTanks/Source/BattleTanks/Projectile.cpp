@@ -1,7 +1,8 @@
 // Copyright Nameless Studio
 
-#include "Projectile.h"
 
+#include "Projectile.h"
+#include "Engine/World.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -53,5 +54,16 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 	LaunchBlast->Deactivate();
 	ImpactExplosion->Activate();
 	ExplosionForce->FireImpulse();
+
+	SetRootComponent(ImpactExplosion);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle Timer;
+	GetWorld()->GetTimerManager().SetTimer(Timer, this,&AProjectile::InTimerMethod,DestroyDelay,false,-1);
 }
 
+void AProjectile::InTimerMethod()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Destroying projectile"));
+	this->Destroy();
+}
