@@ -18,3 +18,18 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
+float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	// How much damage to apply
+	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
+	int32 DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
+
+	CurrentHealth -= DamageToApply;
+	if (TankHealth <= 0)
+	{
+		// tank is dead logic
+	}
+
+	return DamageToApply;
+}
+
