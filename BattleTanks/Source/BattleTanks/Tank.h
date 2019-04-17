@@ -16,6 +16,9 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
+	// Getting current tank's health percentage
+	UFUNCTION(BlueprintPure, Category = "Tank Properties")
+	float GetHealthPercent() const;
 public:	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

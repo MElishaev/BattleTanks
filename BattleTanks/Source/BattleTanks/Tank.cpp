@@ -18,6 +18,11 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
+float ATank::GetHealthPercent() const
+{
+	return (float)CurrentHealth / (float)TankHealth;
+}
+
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
 	// How much damage to apply
