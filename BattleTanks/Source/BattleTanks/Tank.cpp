@@ -10,6 +10,7 @@ ATank::ATank()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -30,9 +31,10 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	int32 DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 
 	CurrentHealth -= DamageToApply;
-	if (TankHealth <= 0)
+	if (CurrentHealth <= 0)
 	{
-		// tank is dead logic
+		// TODO tank is dead logic
+		OnTankDeath.Broadcast();
 	}
 
 	return DamageToApply;

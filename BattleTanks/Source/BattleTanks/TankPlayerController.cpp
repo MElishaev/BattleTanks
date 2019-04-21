@@ -3,6 +3,7 @@
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
 #include "Camera/PlayerCameraManager.h"
+#include "Tank.h"
 #include "Engine/World.h"
 
 void ATankPlayerController::BeginPlay()
@@ -33,6 +34,11 @@ void ATankPlayerController::AimAtCrosshair()
 		// TODO tell the controlled tank to aim at that point
 		AimingComponent->AimAt(HitLocation);
 	}
+}
+
+void ATankPlayerController::OnTankDeath()
+{
+	StartSpectatingOnly();
 }
 
 // get world location where the linetrace intersects the landscape, TRUE if hits landscape
@@ -67,6 +73,16 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		return true;
 	}
 	else return false;
+}
+
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	ATank* PossessedTank = Cast<ATank>(InPawn);
+	if (!ensure(PossessedTank)) { return; }
+
+	PossessedTank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
 }
 
 

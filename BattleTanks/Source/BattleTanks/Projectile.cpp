@@ -75,6 +75,5 @@ void AProjectile::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor,
 
 void AProjectile::InTimerMethod()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Destroying projectile"));
 	this->Destroy();
 }

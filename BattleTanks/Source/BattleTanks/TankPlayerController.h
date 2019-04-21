@@ -23,6 +23,7 @@ public:
 	// Aim the barrel to the point where the linetrace of the crosshair hits the landscape
 	void AimAtCrosshair();
 
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundTankAimingComponent(UTankAimingComponent* AimCompRef);
@@ -42,4 +43,9 @@ private:
 	bool GetSightRayHitLocation(FVector&) const;
 
 	bool GetLookVectorHitLocation(FVector,FVector&) const;
+
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+		void OnTankDeath();
 };

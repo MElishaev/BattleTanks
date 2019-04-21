@@ -4,10 +4,24 @@
 #include "TankAimingComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
+#include "GameFramework/Pawn.h"
+#include "Tank.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn); // Call the super's SetPawn because we don't want to temper with what it does
+	if (InPawn)
+	{
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+
+		PossessedTank->OnTankDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
+	}
 }
 
 void ATankAIController::Tick(float DeltaTime)
@@ -29,4 +43,9 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		AimingComponent->Fire(); // TODO: limit firing rate
 	}
+}
+
+void ATankAIController::OnTankDeath()
+{
+	GetPawn()->DetachFromControllerPendingDestroy();
 }

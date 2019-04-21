@@ -14,11 +14,14 @@ class BATTLETANKS_API ATankAIController : public AAIController
 protected:
 	// How close the AI tank wants to get to the player in cm
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	float AcceptanceRadius = 10000;
+		float AcceptanceRadius = 10000;
 private:
 	void BeginPlay() override;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
 	virtual void Tick(float DeltaTime) override;
 
-
+	UFUNCTION()
+		void OnTankDeath();
 };

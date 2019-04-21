@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Delegate.h"
 #include "Tank.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -19,7 +22,9 @@ public:
 	// Getting current tank's health percentage
 	UFUNCTION(BlueprintPure, Category = "Tank Properties")
 	float GetHealthPercent() const;
-public:	
+
+	FTankDelegate OnTankDeath;
+private:	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
