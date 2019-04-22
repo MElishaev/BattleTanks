@@ -47,5 +47,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::OnTankDeath()
 {
+	if (!GetPawn()) { return; }
 	GetPawn()->DetachFromControllerPendingDestroy();
 }

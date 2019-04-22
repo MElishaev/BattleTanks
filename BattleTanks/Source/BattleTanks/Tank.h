@@ -21,7 +21,7 @@ public:
 
 	// Getting current tank's health percentage
 	UFUNCTION(BlueprintPure, Category = "Tank Properties")
-	float GetHealthPercent() const;
+		float GetHealthPercent() const;
 
 	FTankDelegate OnTankDeath;
 private:	
@@ -29,8 +29,8 @@ private:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tank Properties")
-	int32 TankHealth = 100;
+		int32 TankHealth = 100;
 
 	UPROPERTY(VisibleAnywhere, Category = "Tank Properties")
-	int32 CurrentHealth = TankHealth;
+		int32 CurrentHealth;
 };
