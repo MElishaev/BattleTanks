@@ -17,6 +17,7 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::BeginPlay()
 {
+	Super::BeginPlay();
 	// Have to reload before firing at the start of the game
 	LastFireTime = GetWorld()->GetTimeSeconds();
 }

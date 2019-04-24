@@ -65,7 +65,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 		HitResult,
 		PlayerCameraManager->GetCameraLocation(),
 		PlayerCameraManager->GetCameraLocation() + LookDirection*LineTraceRange,
-		ECollisionChannel(ECC_Visibility)
+		ECollisionChannel(ECC_Camera)
 		))
 	{
 		OutHitResult = HitResult.ImpactPoint;
@@ -79,7 +79,9 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 	Super::SetPawn(InPawn);
 
 	ATank* PossessedTank = Cast<ATank>(InPawn);
-	if (!ensure(PossessedTank)) { return; }
+	// Not ensured because it causes ensure trigger on game exit and on "start game" 
+	// before the PlayerTank built
+	if (!PossessedTank) { return; }
 
 	PossessedTank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
 }

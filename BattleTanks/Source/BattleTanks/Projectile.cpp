@@ -29,6 +29,8 @@ AProjectile::AProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 	ProjectileMovement->bAutoActivate = false;
+
+	// TODO something bugged in unreal engine - after each compile, the Tank_BP loses Projectile_BP
 }
 
 // Called when the game starts or when spawned
