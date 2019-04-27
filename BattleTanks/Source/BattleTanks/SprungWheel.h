@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SphereComponent.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "SprungWheel.generated.h"
 
@@ -28,11 +28,14 @@ public:
 private:
 	// Components
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UStaticMeshComponent* Mass = nullptr;
+		USphereComponent* Wheel = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UStaticMeshComponent* Wheel = nullptr;
+		USphereComponent* Axle = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UPhysicsConstraintComponent* SpringConstraint = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UPhysicsConstraintComponent* WheelAxleConstraint = nullptr;
 };
