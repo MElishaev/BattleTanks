@@ -2,6 +2,9 @@
 
 #include "TankTrack.h"
 
+#include "SprungWheel.h"
+#include "SpringSpawnPoint.h"
+
 UTankTrack::UTankTrack()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -10,40 +13,40 @@ UTankTrack::UTankTrack()
 void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
-	// Registering delegate OnComponentHit
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+TArray<ASprungWheel*> UTankTrack::GetWheels() const
 {
-	NegateSlipForce();
-	DriveTarck();
-	CurrentThrottle = 0;
+	TArray<ASprungWheel*> Wheels;
+
+	TArray<USceneComponent*> WheelSpawnPoints;
+	GetChildrenComponents(false, WheelSpawnPoints); // getting spawn points of this tank track
+	for (USceneComponent* Element : WheelSpawnPoints)
+	{
+		auto WheelSpawnPoint = Cast<USpringSpawnPoint>(Element);
+		if (!WheelSpawnPoint) continue;
+
+		auto Wheel = Cast<ASprungWheel>(WheelSpawnPoint->GetSpawnedActor());
+		if (!Wheel) continue;
+
+		Wheels.Add(Wheel);
+	}
+	return Wheels;
 }
 
-void UTankTrack::NegateSlipForce()
+void UTankTrack::DriveTarck(float CurrentThrottle)
 {
-	auto SlipSidewaysSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
-
-	// Zeroing the sideway slip speed
-	float DeltaTime = GetWorld()->GetDeltaSeconds();
-	auto SlipCorrectAcc = -SlipSidewaysSpeed / DeltaTime * GetRightVector();
-
-	auto TankMesh = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
-	auto CorrectionForce = TankMesh->GetMass() * SlipCorrectAcc / 2;
-	TankMesh->AddForce(CorrectionForce);
-}
-
-void UTankTrack::DriveTarck()
-{
-	auto ForceApplied = TrackMaxDrivingForce * CurrentThrottle * GetForwardVector();
-	auto ForceLocation = GetComponentLocation();
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
+	auto ForceApplied = TrackMaxDrivingForce * CurrentThrottle;
+	auto Wheels = GetWheels();
+	auto ForcePerWheel = ForceApplied / Wheels.Num();
+	for (ASprungWheel* Wheel : Wheels)
+	{
+		Wheel->AddDrivingForce(ForcePerWheel);
+	}
 }
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	// TODO: clamp the throttle of the tank
-	CurrentThrottle = CurrentThrottle + FMath::Clamp<float>(Throttle, -1, +1);
+	float CurrentThrottle = FMath::Clamp<float>(Throttle, -1, +1);
+	DriveTarck(CurrentThrottle);
 }

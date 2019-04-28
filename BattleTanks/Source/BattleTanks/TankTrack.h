@@ -27,12 +27,7 @@ private:
 
 	virtual void BeginPlay() override;
 
-	void NegateSlipForce();
-
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	TArray<class ASprungWheel*> GetWheels() const;
 	
-	void DriveTarck();
-
-	float CurrentThrottle = 0;
+	void DriveTarck(float CurrentThrottle);
 };

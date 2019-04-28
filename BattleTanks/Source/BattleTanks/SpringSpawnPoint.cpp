@@ -21,7 +21,7 @@ void USpringSpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());
+	SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());
 	if (!SpawnedActor) return;
 	SpawnedActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	UGameplayStatics::FinishSpawningActor(SpawnedActor, GetComponentTransform());
@@ -34,5 +34,10 @@ void USpringSpawnPoint::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+AActor * USpringSpawnPoint::GetSpawnedActor() const
+{
+	return SpawnedActor;
 }
 
